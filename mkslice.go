@@ -27,7 +27,30 @@ func main() {
 		goresult = <-taskmsg
 		fmt.Println("make slice Done ", goresult)
 	}
+	//close(taskmsg)
+
 	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	fmt.Printf("GC前内存占用： %d Kb  CPU核心: %d\n", m.Alloc/1024, runtime.NumCPU())
+	runtime.GC()
+	debug.FreeOSMemory()
+
+	runtime.ReadMemStats(&m)
+	fmt.Printf("结束内存占用： %d Kb  CPU核心: %d\n", m.Alloc/1024, runtime.NumCPU())
+
+	//Case 2
+	fmt.Println("回收内存后,再循环一次,看内存使用状况:")
+	for i = 1; i <= limit; i++ {
+		go makeslice(i+limit, n)
+	}
+
+	for i = 1; i <= limit; i++ {
+		goresult = <-taskmsg
+		fmt.Println("make slice Done ", goresult)
+	}
+	close(taskmsg)
+
+	//var m runtime.MemStats
 	runtime.ReadMemStats(&m)
 	fmt.Printf("GC前内存占用： %d Kb  CPU核心: %d\n", m.Alloc/1024, runtime.NumCPU())
 	runtime.GC()
@@ -49,10 +72,10 @@ func makeslice(index int, n int) int {
 	fmt.Println("任务：", index, cap(a1), a1[0], a1[99999], a1[525019661])
 	itme := time.Now()
 	ms1 := (itme.UnixNano() - itmq.UnixNano()) / 1e6
-	fmt.Printf("make 耗时：%v ms\n", NumberFormat(strconv.FormatInt(ms1, 10)))
+	fmt.Printf("%d make 耗时：%v ms\n", index, NumberFormat(strconv.FormatInt(ms1, 10)))
 
 	runtime.ReadMemStats(&mr2)
-	fmt.Printf("内存占用： %d Kb  CPU核心: %d\n", (mr2.Alloc-mr1.Alloc)/1024, runtime.NumCPU())
+	fmt.Printf("%d 内存占用： %d Kb  CPU核心: %d\n", index, (mr2.Alloc-mr1.Alloc)/1024, runtime.NumCPU())
 	taskmsg <- "完成" + strconv.Itoa(index)
 	return cap(a1)
 }
