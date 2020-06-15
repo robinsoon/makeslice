@@ -3,7 +3,9 @@
 make slice 5*500MB! test GO memory allocation
 
 test go make slice out of memory
+runtime: out of memory: cannot allocate *******-byte block (****** in use)
 
+```go
 `Thanks a lot for davecheney's advice:`
 
 `the upper limit of a slice is some significant fraction of the address space of a process.` 
@@ -11,8 +13,9 @@ test go make slice out of memory
 `For 64 bit processes, in excess of a terrabyte, 10^40 bits.`
 
 `Thank you for posting your sample code. Unlike many projects on GitHub, the Go project does not use its bug tracker for general discussion or asking questions. We only use our bug tracker for tracking bugs and tracking proposals going through the Proposal Process.`
+```
 
-
+---------------------------
 
 make slice  3 *500MB! test GO memory allocation
 
