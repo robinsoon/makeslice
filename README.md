@@ -4,6 +4,15 @@ make slice 5*500MB! test GO memory allocation
 
 test go make slice out of memory
 
+`Thanks a lot for davecheney's advice:`
+
+`the upper limit of a slice is some significant fraction of the address space of a process.` 
+`For 32 bit processes, between 1-2 gb, perhaps a little less on 32 bit windows because of DLL address space fragmentation.` 
+`For 64 bit processes, in excess of a terrabyte, 10^40 bits.`
+
+`Thank you for posting your sample code. Unlike many projects on GitHub, the Go project does not use its bug tracker for general discussion or asking questions. We only use our bug tracker for tracking bugs and tracking proposals going through the Proposal Process.`
+
+
 
 make slice  3 *500MB! test GO memory allocation
 
